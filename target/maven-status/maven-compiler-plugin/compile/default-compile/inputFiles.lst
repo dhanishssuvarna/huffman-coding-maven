@@ -1,0 +1,8 @@
+/home/dhanish/development/huffman-coding-maven/src/main/java/com/mycompany/app/compress/Compression.java
+/home/dhanish/development/huffman-coding-maven/src/main/java/com/mycompany/app/compress/HuffmanCompression.java
+/home/dhanish/development/huffman-coding-maven/src/main/java/com/mycompany/app/decompress/HuffmanDecompression.java
+/home/dhanish/development/huffman-coding-maven/src/main/java/com/mycompany/app/treeNode/CharComparator.java
+/home/dhanish/development/huffman-coding-maven/src/main/java/com/mycompany/app/App.java
+/home/dhanish/development/huffman-coding-maven/src/main/java/com/mycompany/app/treeNode/Node.java
+/home/dhanish/development/huffman-coding-maven/src/main/java/com/mycompany/app/decompress/Decompression.java
+/home/dhanish/development/huffman-coding-maven/src/main/java/com/mycompany/app/verify/CheckCompression.java
