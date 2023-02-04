@@ -1,6 +1,6 @@
 package com.mycompany.app;
 
-import com.mycompany.app.verify.CheckCompression;
+import com.mycompany.app.stats.CheckCompression;
 import com.mycompany.app.compress.HuffmanCompression;
 import com.mycompany.app.decompress.HuffmanDecompression;
 
@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.Scanner;
 
 /**
- * The type Main.
+ * The type App is the Main
  */
 public class App {
 
@@ -41,28 +41,7 @@ public class App {
         end = System.currentTimeMillis();
         long decompressionTime = end - start;
 
-        File of = new File(originalFile);
-        long ofl = of.length();
-
-        File cf = new File(compressedFile);
-        long cfl = cf.length();
-
-        File df = new File(decompressedFile);
-        long dfl = df.length();
-
         CheckCompression cc = new CheckCompression();
-        boolean isEqual = cc.CompareFiles(originalFile, decompressedFile);
-
-        if(isEqual){
-            System.out.println("\n********** Operation Successful **********\n");
-            System.out.println("Compress Time : " + compressionTime + " ms");
-            System.out.println("Decompress Time : " + decompressionTime + " ms");
-            System.out.println("Original File Size : " + (float) ofl/(1024*1024) + " MB");
-            System.out.println("Compressed File Size : " + (float) cfl/(1024*1024) + " MB");
-            System.out.println("Decompressed File Size : " + (float) dfl/(1024*1024) + " MB");
-            System.out.println("Compression Ratio : " + ((float)(ofl-cfl)/ofl)*100 + " %");
-        }else {
-            System.out.println("\n********** Operation Failed **********\n");
-        }
+        cc.getStats(originalFile, compressedFile ,decompressedFile, compressionTime, decompressionTime);
     }
 }

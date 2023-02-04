@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.mycompany.app"},{"l":"com.mycompany.app.compress"},{"l":"com.mycompany.app.decompress"},{"l":"com.mycompany.app.treeNode"},{"l":"com.mycompany.app.verify"}]
