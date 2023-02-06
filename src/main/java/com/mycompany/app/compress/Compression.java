@@ -2,7 +2,7 @@ package com.mycompany.app.compress;
 
 import com.mycompany.app.treeNode.Node;
 
-import java.io.FileReader;
+import java.io.FileNotFoundException;
 import java.util.Map;
 import java.util.PriorityQueue;
 
@@ -11,21 +11,29 @@ import java.util.PriorityQueue;
  */
 public interface Compression {
     /**
-     * Gets content of the input file
+     * Gets content.
      *
-     * @param fr the file reader
-     * @return the content and generate char freq
+     * @param path the path
+     * @return the content
      */
-    Map<Character, Integer> getContentAndGenerateCharFreq(FileReader fr);
+    StringBuilder getContent(String path) throws FileNotFoundException;
+
+
+    /**
+     * Generate char freq map.
+     *
+     * @param path the path
+     * @return the map
+     */
+    Map<Character, Integer> generateCharFreq(String path);
 
     /**
      * Generate tree node.
      *
-     * @param mp the mp is the frequency map
      * @param pq the pq is the priority Queue
      * @return the node i.e root of the tree
      */
-    Node generateTree(Map<Character, Integer> mp, PriorityQueue<Node> pq);
+    Node generateTree(PriorityQueue<Node> pq);
 
     /**
      * Generate table map.
@@ -39,9 +47,10 @@ public interface Compression {
      * Gets bit string.
      *
      * @param table the Huffman table
+     * @param s     the s
      * @return the bit string
      */
-    StringBuilder getBitString(Map<Character, String> table);
+    StringBuilder getBitString(Map<Character, String> table, String s);
 
     /**
      * Pad bit string int.
@@ -62,15 +71,18 @@ public interface Compression {
     /**
      * Write into file.
      *
-     * @param file        the file
      * @param root        the root
      * @param paddedZeros the padded zeros
      * @param byteArray   the byte array
+     * @return the string
      */
-    void WriteIntoFile(String file, Node root, int paddedZeros, byte[] byteArray);
+    boolean WriteIntoFile(String file, Node root, int paddedZeros, byte[] byteArray);
 
     /**
      * Compress the input file
+     *
+     * @param path the path
+     * @return the string
      */
-    void compress();
+    String compress(String path) throws FileNotFoundException;
 }

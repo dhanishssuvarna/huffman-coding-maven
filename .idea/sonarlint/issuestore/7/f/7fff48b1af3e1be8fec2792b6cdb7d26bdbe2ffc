@@ -1,0 +1,6 @@
+
+S	java:S106"9Replace this use of System.out or System.err by a logger.(¼êñôúÿÿÿÿ
+N	java:S106"9Replace this use of System.out or System.err by a logger.(ÎŞË
+S	java:S106""9Replace this use of System.out or System.err by a logger.(·ğ­Åøÿÿÿÿ
+F
+java:S1128")Remove this unused import 'java.io.File'.(†Ğ¥Å8ˆö³â0

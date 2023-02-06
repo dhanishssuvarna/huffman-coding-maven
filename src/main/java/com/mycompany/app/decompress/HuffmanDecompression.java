@@ -6,20 +6,6 @@ import java.io.*;
  * The type Huffman decompression.
  */
 public class HuffmanDecompression implements Decompression {
-    /**
-     * The Path of the compressed file
-     */
-    String path;
-
-    /**
-     * Instantiates a new Huffman decompression.
-     *
-     * @param path the path
-     */
-    public HuffmanDecompression(String path){
-        this.path=path;
-    }
-
     @Override
     public Node regenerateTree(ObjectInputStream in){
         Node root=null;
@@ -102,7 +88,7 @@ public class HuffmanDecompression implements Decompression {
 
 
     @Override
-    public void WriteIntoFile(String file, String decompressedStr){
+    public boolean WriteIntoFile(String file, String decompressedStr){
         try {
             FileWriter f = new FileWriter(file);
             f.write(decompressedStr);
@@ -110,10 +96,11 @@ public class HuffmanDecompression implements Decompression {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return true;
     }
 
     @Override
-    public void decompression() {
+    public String decompression(String path) {
         try {
             FileInputStream fin = new FileInputStream(path);
             ObjectInputStream in = new ObjectInputStream(fin);
@@ -128,7 +115,9 @@ public class HuffmanDecompression implements Decompression {
             StringBuilder bitStr = getBitString(compressedString);
             StringBuilder decompressedStr = getDecompressedString(root, paddedZeros, bitStr.toString());
 
-            WriteIntoFile("decompress.txt", decompressedStr.toString());
+            String file = "decompress.txt";
+            WriteIntoFile(file, decompressedStr.toString());
+            return file;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

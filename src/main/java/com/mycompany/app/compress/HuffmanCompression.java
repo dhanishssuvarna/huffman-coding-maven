@@ -10,37 +10,38 @@ import java.util.*;
  * The type Huffman compression.
  */
 public class HuffmanCompression implements Compression {
-    /**
-     * The Path of the original file
-     */
-    String path;
+    @Override
+    public StringBuilder getContent(String path) {
+        StringBuilder s = new StringBuilder();
+        try {
+            FileReader fr = new FileReader(path);
+            int val = fr.read();
+            while (val != -1){
+                char ch = (char) val;
+                s.append(ch);
+                val = fr.read();
+            }
 
-    /**
-     * The S stores the content of th file
-     */
-    StringBuilder s = new StringBuilder();
-
-    /**
-     * Instantiates a new Huffman compression.
-     *
-     * @param path the path
-     */
-    public HuffmanCompression(String path){
-        this.path=path;
+            fr.close();
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return s;
     }
 
     @Override
-    public Map<Character, Integer> getContentAndGenerateCharFreq(FileReader fr){
+    public Map<Character, Integer> generateCharFreq(String path){
         Map<Character, Integer> mp = new HashMap<>();
         try {
+            FileReader fr = new FileReader(path);
             int val = fr.read();
             while (val != -1){
 
                 char ch = (char) val;
-                s.append(ch);
                 mp.put(ch,(mp.getOrDefault(ch,0)+1));
                 val = fr.read();
             }
+            fr.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -48,12 +49,7 @@ public class HuffmanCompression implements Compression {
     }
 
     @Override
-    public Node generateTree(Map<Character, Integer> mp, PriorityQueue<Node> pq){
-        for(Map.Entry<Character, Integer> e : mp.entrySet()) {
-//            System.out.println(e.getKey()+" : "+ e.getValue());
-            Node temp = new Node(e.getKey(), e.getValue());
-            pq.add(temp);
-        }
+    public Node generateTree(PriorityQueue<Node> pq){
 
         // if single node
         if(pq.size()==1){
@@ -107,10 +103,10 @@ public class HuffmanCompression implements Compression {
     }
 
     @Override
-    public StringBuilder getBitString(Map<Character, String> table){
+    public StringBuilder getBitString(Map<Character, String> table, String s){
         StringBuilder bitStr = new StringBuilder();
 
-        for (char c : s.toString().toCharArray()) {
+        for (char c : s.toCharArray()) {
             String bit = table.get(c);
             bitStr.append(bit);
         }
@@ -138,7 +134,7 @@ public class HuffmanCompression implements Compression {
     }
 
     @Override
-    public void WriteIntoFile(String file, Node root, int paddedZeros, byte[] byteArray){
+    public boolean WriteIntoFile(String file, Node root, int paddedZeros, byte[] byteArray){
         try {
             FileOutputStream fout = new FileOutputStream(file);
             ObjectOutputStream out =new ObjectOutputStream(fout);
@@ -152,28 +148,33 @@ public class HuffmanCompression implements Compression {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return true;
     }
 
     @Override
-    public void compress(){
+    public String compress(String path)  {
         PriorityQueue<Node> pq = new PriorityQueue<>(new NodeComparator());
 
-        try {
-            FileReader fr = new FileReader(path);
-            Map<Character, Integer> mp = getContentAndGenerateCharFreq(fr);
-            fr.close();
+        StringBuilder s = getContent(path);
+        Map<Character, Integer> mp = generateCharFreq(path);
 
-            Node root = generateTree(mp, pq);
-            Map<Character, String> table = generateTable(root);
-
-            StringBuilder bitStr = getBitString(table);
-            int paddedZeros = padBitString(bitStr);
-
-            byte[] byteArray = getCompressedByteArray(bitStr.toString());
-
-            WriteIntoFile("compress.txt", root, paddedZeros, byteArray);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        for(Map.Entry<Character, Integer> e : mp.entrySet()) {
+//            System.out.println(e.getKey()+" : "+ e.getValue());
+            Node temp = new Node(e.getKey(), e.getValue());
+            pq.add(temp);
         }
+
+        Node root = generateTree(pq);
+        Map<Character, String> table = generateTable(root);
+
+        StringBuilder bitStr = getBitString(table, s.toString());
+        int paddedZeros = padBitString(bitStr);
+
+        byte[] byteArray = getCompressedByteArray(bitStr.toString());
+
+        String file = "compress.txt";
+        WriteIntoFile(file, root, paddedZeros, byteArray);
+
+        return file;
     }
 }

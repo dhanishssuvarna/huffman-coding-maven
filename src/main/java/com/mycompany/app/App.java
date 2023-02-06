@@ -24,20 +24,17 @@ public class App {
         String originalFile = sc.nextLine();
         sc.close();
 
-        String compressedFile = "compress.txt";
-        String decompressedFile = "decompress.txt";
-
         System.out.println("\nCompressing File........");
-        HuffmanCompression hc = new HuffmanCompression(originalFile);
+        HuffmanCompression hc = new HuffmanCompression();
         long start = System.currentTimeMillis();
-        hc.compress();
+        String compressedFile =  hc.compress(originalFile);
         long end = System.currentTimeMillis();
         long compressionTime = end - start;
 
         System.out.println("Decompressing File........");
-        HuffmanDecompression hd = new HuffmanDecompression(compressedFile);
+        HuffmanDecompression hd = new HuffmanDecompression();
         start = System.currentTimeMillis();
-        hd.decompression();
+        String decompressedFile = hd.decompression(compressedFile);
         end = System.currentTimeMillis();
         long decompressionTime = end - start;
 

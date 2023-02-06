@@ -64,10 +64,10 @@ public interface Decompression {
      * @param file            the file
      * @param decompressedStr the decompressed string
      */
-    void WriteIntoFile(String file, String decompressedStr);
+    boolean WriteIntoFile(String file, String decompressedStr);
 
     /**
      * Decompression the compressed file
      */
-    void decompression();
+    String decompression(String path);
 }

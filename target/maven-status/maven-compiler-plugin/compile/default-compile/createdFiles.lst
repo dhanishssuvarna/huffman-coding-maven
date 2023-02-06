@@ -1,8 +1,8 @@
 com/mycompany/app/decompress/HuffmanDecompression.class
 com/mycompany/app/App.class
+com/mycompany/app/treeNode/NodeComparator.class
 com/mycompany/app/treeNode/Node.class
 com/mycompany/app/stats/CheckCompression.class
-com/mycompany/app/treeNode/CharComparator.class
 com/mycompany/app/decompress/Decompression.class
 com/mycompany/app/compress/HuffmanCompression.class
 com/mycompany/app/compress/Compression.class
