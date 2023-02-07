@@ -29,12 +29,8 @@ public class HuffmanCompressionTest {
     public void testFileGetContent() {
         StringBuilder result = HuffCompress.getContent("testFile.txt");
         assertEquals("abcaba", result.toString());
+        assertThrows(RuntimeException.class, () -> HuffCompress.getContent("Invalid.txt"));
     }
-
-//    @Test(expected = RuntimeException.class)
-//    public void testFileGetContentThrowsException() {
-//        StringBuilder result = HuffCompress.getContent("dummy.txt");
-//    }
 
     @Test
     public void testCharacterFrequency() throws IOException {
@@ -45,13 +41,8 @@ public class HuffmanCompressionTest {
 
         Map<Character, Integer> result = HuffCompress.generateCharFreq("testFile.txt");
         assertEquals(expected, result);
+        assertThrows(RuntimeException.class, () -> HuffCompress.generateCharFreq("Invalid.txt"));
     }
-
-//    @Test(expected = RuntimeException.class)
-//    public void testCharacterFrequencyThrowsException() {
-//        Map<Character, Integer> result = HuffCompress.generateCharFreq("dummy.txt");
-//        throw new RuntimeException();
-//    }
 
     public static boolean areIdentical(Node root1, Node root2) {
 
@@ -184,21 +175,8 @@ public class HuffmanCompressionTest {
 
         boolean result = HuffCompress.WriteIntoFile(file, root, paddedZero, byteArray);
         assertEquals(expected, result);
+        assertThrows(RuntimeException.class, () -> HuffCompress.WriteIntoFile("dummy.txt", root, paddedZero, byteArray));
     }
-
-//    @Test(expected = RuntimeException.class)
-//    public void testWriteIntoFileThrowsException() {
-//        Node root = new Node('a'+'b'+'c', 6);
-//        root.left = new Node('a', 3);
-//        root.right = new Node('b'+'c', 3);
-//        root.right.left = new Node('c', 1);
-//        root.right.right = new Node('b', 2);
-//        int paddedZero = 7;
-//        byte[] byteArray = new byte[]{115, 0};
-//
-//        boolean result = HuffCompress.WriteIntoFile("dummy.txt", root, paddedZero, byteArray);
-//        throw new RuntimeException();
-//    }
 
     @Test
     public void testCompression(){

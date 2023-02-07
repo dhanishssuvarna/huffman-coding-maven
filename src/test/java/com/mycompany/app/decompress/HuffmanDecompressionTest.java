@@ -76,14 +76,14 @@ public class HuffmanDecompressionTest {
         assertTrue(areIdentical(expected, result));
     }
 
-//    @Test(expected = RuntimeException.class)
-//    public void testRegenerateTreeThrowsException() throws IOException {
-//        FileInputStream fin = new FileInputStream("dummy.txt");
-//        ObjectInputStream in = new ObjectInputStream(fin);
-//
-//        Node result = HuffDecompress.regenerateTree(in);
-//        throw new RuntimeException();
-//    }
+    @Test
+    public void testRegenerateTreeThrowsException() throws IOException {
+        FileInputStream fin = new FileInputStream("testCompress.txt");
+        ObjectInputStream in = new ObjectInputStream(fin);
+
+        Node temp = HuffDecompress.regenerateTree(in);
+        assertThrows(RuntimeException.class, () -> HuffDecompress.regenerateTree(in));
+    }
 
     @Test
     public void testGetPaddedZeros() throws IOException {
@@ -99,17 +99,15 @@ public class HuffmanDecompressionTest {
         in.close();
 
         assertEquals(expected, result);
-
     }
 
-//    @Test(expected = RuntimeException.class)
-//    public void testGetPaddedZerosThrowsException() throws IOException {
-//        FileInputStream fin = new FileInputStream("dummy.txt");
-//        ObjectInputStream in = new ObjectInputStream(fin);
-//
-//        int result = HuffDecompress.getPaddedZeros(in);
-//        throw new RuntimeException();
-//    }
+    @Test
+    public void testGetPaddedZerosThrowsException() throws IOException {
+        FileInputStream fin = new FileInputStream("testCompress.txt");
+        ObjectInputStream in = new ObjectInputStream(fin);
+
+        assertThrows(RuntimeException.class, () -> HuffDecompress.getPaddedZeros(in));
+    }
 
     @Test
     public void testGetCompressedString() throws IOException {
@@ -128,14 +126,14 @@ public class HuffmanDecompressionTest {
         assertArrayEquals(expected, result);
     }
 
-//    @Test(expected = RuntimeException.class)
-//    public void testGetCompressedStringThrowsException() throws IOException {
-//        FileInputStream fin = new FileInputStream("dummy.txt");
-//        ObjectInputStream in = new ObjectInputStream(fin);
-//
-//        byte[] result = HuffDecompress.getCompressedString(in);
-//        throw new RuntimeException();
-//    }
+    @Test
+    public void testGetCompressedStringThrowsException() throws IOException {
+        FileInputStream fin = new FileInputStream("testCompress.txt");
+        ObjectInputStream in = new ObjectInputStream(fin);
+
+        Node temp = HuffDecompress.regenerateTree(in);
+        assertThrows(RuntimeException.class, () -> HuffDecompress.getCompressedString(in));
+    }
 
     @Test
     public void testGetBitString() {
@@ -187,6 +185,8 @@ public class HuffmanDecompressionTest {
         boolean result = HuffDecompress.WriteIntoFile(file, decompressedStr);
 
         assertEquals(expected, result);
+        assertThrows(RuntimeException.class, () -> HuffDecompress.WriteIntoFile("dummy.txt", decompressedStr));
+
     }
 
     @Test
@@ -197,5 +197,6 @@ public class HuffmanDecompressionTest {
         String result = HuffDecompress.decompression(path);
 
         assertEquals(expected, result);
+        assertThrows(RuntimeException.class, () -> HuffDecompress.decompression("Invalid.txt"));
     }
 }
