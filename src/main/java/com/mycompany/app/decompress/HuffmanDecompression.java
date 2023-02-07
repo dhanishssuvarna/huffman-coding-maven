@@ -92,7 +92,7 @@ public class HuffmanDecompression implements Decompression {
 
 
     @Override
-    public boolean WriteIntoFile(String file, String decompressedStr){
+    public void WriteIntoFile(String file, String decompressedStr){
         try {
             FileWriter f = new FileWriter(file);
             f.write(decompressedStr);
@@ -100,7 +100,6 @@ public class HuffmanDecompression implements Decompression {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return true;
     }
 
     @Override

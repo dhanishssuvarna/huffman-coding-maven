@@ -5,7 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -162,7 +162,7 @@ public class HuffmanCompressionTest {
 
     @Test
     public void testWriteIntoFile(){
-        String file = "compress.txt";
+        String file = "testCompress.txt";
         Node root = new Node('a'+'b'+'c', 6);
         root.left = new Node('a', 3);
         root.right = new Node('b'+'c', 3);
@@ -171,10 +171,29 @@ public class HuffmanCompressionTest {
         int paddedZero = 7;
         byte[] byteArray = new byte[]{115, 0};
 
-        boolean expected = true;
+        HuffCompress.WriteIntoFile(file, root, paddedZero, byteArray);
 
-        boolean result = HuffCompress.WriteIntoFile(file, root, paddedZero, byteArray);
-        assertEquals(expected, result);
+        Node resultRoot;
+        int resultPad;
+        byte[] resultByteArray;
+
+        try{
+            FileInputStream fin = new FileInputStream(file);
+            ObjectInputStream in =new ObjectInputStream(fin);
+
+            resultRoot= (Node) in.readObject();
+            resultPad = in.readInt();
+            resultByteArray = (byte[]) in.readObject();
+
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertTrue(areIdentical(root, resultRoot));
+        assertEquals(paddedZero, resultPad);
+        assertArrayEquals(byteArray, resultByteArray);
         assertThrows(RuntimeException.class, () -> HuffCompress.WriteIntoFile("dummy.txt", root, paddedZero, byteArray));
     }
 

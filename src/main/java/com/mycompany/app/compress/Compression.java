@@ -76,7 +76,7 @@ public interface Compression {
      * @param byteArray   the byte array
      * @return the string
      */
-    boolean WriteIntoFile(String file, Node root, int paddedZeros, byte[] byteArray);
+    void WriteIntoFile(String file, Node root, int paddedZeros, byte[] byteArray);
 
     /**
      * Compress the input file

@@ -181,10 +181,23 @@ public class HuffmanDecompressionTest {
         String file = "testDecompress.txt";
         String decompressedStr = "abcaba";
 
-        boolean expected = true;
-        boolean result = HuffDecompress.WriteIntoFile(file, decompressedStr);
+        String result="";
+        HuffDecompress.WriteIntoFile(file, decompressedStr);
 
-        assertEquals(expected, result);
+        try{
+            FileReader f = new FileReader(file);
+            int i;
+            char c;
+            while((i = f.read()) != -1){
+                c = (char) i;
+                result+=c;
+            }
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+
+
+        assertEquals(decompressedStr, result);
         assertThrows(RuntimeException.class, () -> HuffDecompress.WriteIntoFile("dummy.txt", decompressedStr));
 
     }

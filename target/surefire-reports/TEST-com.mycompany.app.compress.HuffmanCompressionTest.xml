@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.mycompany.app.compress.HuffmanCompressionTest" time="0.143" tests="10" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.mycompany.app.compress.HuffmanCompressionTest" time="0.015" tests="10" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="gnome"/>
     <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
@@ -16,7 +16,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="IN"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/dhanish/development/huffman-coding-maven/target/surefire/surefirebooter4974484564638979977.jar /home/dhanish/development/huffman-coding-maven/target/surefire 2023-02-06T17-34-50_673-jvmRun1 surefire5627014210431879291tmp surefire_0557340880694051400tmp"/>
+    <property name="sun.java.command" value="/home/dhanish/development/huffman-coding-maven/target/surefire/surefirebooter9856614253528100785.jar /home/dhanish/development/huffman-coding-maven/target/surefire 2023-02-07T15-42-34_739-jvmRun1 surefire13203364287381430142tmp surefire_08355203517675286527tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/dhanish/development/huffman-coding-maven/target/test-classes:/home/dhanish/development/huffman-coding-maven/target/classes:/home/dhanish/.m2/repository/junit/junit/4.13.1/junit-4.13.1.jar:/home/dhanish/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -32,7 +32,7 @@
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="/home/dhanish/development/huffman-coding-maven/target/surefire/surefirebooter4974484564638979977.jar"/>
+    <property name="surefire.real.class.path" value="/home/dhanish/development/huffman-coding-maven/target/surefire/surefirebooter9856614253528100785.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="11.0.17+8-post-Ubuntu-1ubuntu222.04"/>
     <property name="user.name" value="dhanish"/>
@@ -57,14 +57,14 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="55.0"/>
   </properties>
-  <testcase name="testGetTable" classname="com.mycompany.app.compress.HuffmanCompressionTest" time="0.032"/>
-  <testcase name="testGenerateTree" classname="com.mycompany.app.compress.HuffmanCompressionTest" time="0.004"/>
-  <testcase name="testPadBitString" classname="com.mycompany.app.compress.HuffmanCompressionTest" time="0"/>
-  <testcase name="testGetCompressedByteArray" classname="com.mycompany.app.compress.HuffmanCompressionTest" time="0.003"/>
-  <testcase name="testWriteIntoFile" classname="com.mycompany.app.compress.HuffmanCompressionTest" time="0.012"/>
+  <testcase name="testGetTable" classname="com.mycompany.app.compress.HuffmanCompressionTest" time="0"/>
+  <testcase name="testGenerateTree" classname="com.mycompany.app.compress.HuffmanCompressionTest" time="0"/>
+  <testcase name="testPadBitString" classname="com.mycompany.app.compress.HuffmanCompressionTest" time="0.001"/>
+  <testcase name="testGetCompressedByteArray" classname="com.mycompany.app.compress.HuffmanCompressionTest" time="0"/>
+  <testcase name="testWriteIntoFile" classname="com.mycompany.app.compress.HuffmanCompressionTest" time="0"/>
   <testcase name="testGetBitString" classname="com.mycompany.app.compress.HuffmanCompressionTest" time="0"/>
-  <testcase name="testCharacterFrequency" classname="com.mycompany.app.compress.HuffmanCompressionTest" time="0.001"/>
-  <testcase name="testCompression" classname="com.mycompany.app.compress.HuffmanCompressionTest" time="0.003"/>
-  <testcase name="testGenerateTreeSingleNode" classname="com.mycompany.app.compress.HuffmanCompressionTest" time="0.001"/>
+  <testcase name="testCharacterFrequency" classname="com.mycompany.app.compress.HuffmanCompressionTest" time="0"/>
+  <testcase name="testCompression" classname="com.mycompany.app.compress.HuffmanCompressionTest" time="0"/>
+  <testcase name="testGenerateTreeSingleNode" classname="com.mycompany.app.compress.HuffmanCompressionTest" time="0"/>
   <testcase name="testFileGetContent" classname="com.mycompany.app.compress.HuffmanCompressionTest" time="0"/>
 </testsuite>

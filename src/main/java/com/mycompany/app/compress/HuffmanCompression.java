@@ -134,7 +134,7 @@ public class HuffmanCompression implements Compression {
     }
 
     @Override
-    public boolean WriteIntoFile(String file, Node root, int paddedZeros, byte[] byteArray){
+    public void WriteIntoFile(String file, Node root, int paddedZeros, byte[] byteArray){
         try {
             FileOutputStream fout = new FileOutputStream(file);
             ObjectOutputStream out =new ObjectOutputStream(fout);
@@ -148,7 +148,6 @@ public class HuffmanCompression implements Compression {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return true;
     }
 
     @Override
