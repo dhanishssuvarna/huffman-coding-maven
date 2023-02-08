@@ -23,7 +23,7 @@ public class HuffmanCompression implements Compression {
             }
 
             fr.close();
-        }catch (Exception e) {
+        }catch (IOException e) {
             throw new RuntimeException(e);
         }
         return s;

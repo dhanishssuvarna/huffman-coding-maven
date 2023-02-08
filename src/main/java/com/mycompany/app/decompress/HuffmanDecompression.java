@@ -11,9 +11,7 @@ public class HuffmanDecompression implements Decompression {
         Node root=null;
         try {
             root = (Node) in.readObject();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return root;
@@ -36,9 +34,7 @@ public class HuffmanDecompression implements Decompression {
         byte[] compressedString = null;
         try {
             compressedString = (byte[]) in.readObject();
-        }catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        }catch (Exception e) {
             throw new RuntimeException(e);
         }
         return compressedString;

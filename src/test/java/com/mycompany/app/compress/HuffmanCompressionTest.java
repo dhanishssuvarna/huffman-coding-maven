@@ -198,12 +198,28 @@ public class HuffmanCompressionTest {
     }
 
     @Test
-    public void testCompression(){
+    public void testCompression() throws IOException, ClassNotFoundException {
         String path = "testFile.txt";
 
-        String expected = "compress.txt";
-        String result = HuffCompress.compress(path);
+        Node root = new Node('a'+'b'+'c', 6);
+        root.left = new Node('a', 3);
+        root.right = new Node('b'+'c', 3);
+        root.right.left = new Node('c', 1);
+        root.right.right = new Node('b', 2);
+        int paddedZero = 7;
+        byte[] byteArray = new byte[]{115, 0};
 
-        assertEquals(expected, result);
+        String resultFile = HuffCompress.compress(path);
+
+        FileInputStream fin = new FileInputStream(resultFile);
+        ObjectInputStream in = new ObjectInputStream(fin);
+
+        Node resultRoot = (Node) in.readObject();
+        int resultPad = in.readInt();
+        byte[] resultByteArray = (byte[]) in.readObject();
+
+        assertTrue(areIdentical(root, resultRoot));
+        assertEquals(paddedZero, resultPad);
+        assertArrayEquals(byteArray, resultByteArray);
     }
 }
