@@ -97,28 +97,4 @@ public class HuffmanDecompression implements Decompression {
             throw new RuntimeException(e);
         }
     }
-
-    @Override
-    public String decompression(String path) {
-        try {
-            FileInputStream fin = new FileInputStream(path);
-            ObjectInputStream in = new ObjectInputStream(fin);
-
-            Node root = regenerateTree(in);
-            int paddedZeros = getPaddedZeros(in);
-            byte[] compressedString = getCompressedString(in);
-
-            in.close();
-            fin.close();
-
-            StringBuilder bitStr = getBitString(compressedString);
-            StringBuilder decompressedStr = getDecompressedString(root, paddedZeros, bitStr.toString());
-
-            String file = "decompress.txt";
-            WriteIntoFile(file, decompressedStr.toString());
-            return file;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

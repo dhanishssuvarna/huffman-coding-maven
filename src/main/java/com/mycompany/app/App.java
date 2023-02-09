@@ -1,10 +1,9 @@
 package com.mycompany.app;
 
-import com.mycompany.app.compress.HuffmanCompression;
-import com.mycompany.app.decompress.HuffmanDecompression;
+import com.mycompany.app.zipUnzip.HuffmanZipperUnzipper;
+import com.mycompany.app.zipUnzip.IZipperUnzipper;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -27,17 +26,17 @@ public class App {
         String originalFile = sc.nextLine();
         sc.close();
 
+        IZipperUnzipper fz = new HuffmanZipperUnzipper();
+
         System.out.println("\nCompressing File........");
-        HuffmanCompression hc = new HuffmanCompression();
         long start = System.currentTimeMillis();
-        String compressedFile =  hc.compress(originalFile);
+        String compressedFile =  fz.compress(originalFile);
         long end = System.currentTimeMillis();
         long compressionTime = end - start;
 
         System.out.println("Decompressing File........");
-        HuffmanDecompression hd = new HuffmanDecompression();
         start = System.currentTimeMillis();
-        String decompressedFile = hd.decompression(compressedFile);
+        String decompressedFile = fz.decompress(compressedFile);
         end = System.currentTimeMillis();
         long decompressionTime = end - start;
 

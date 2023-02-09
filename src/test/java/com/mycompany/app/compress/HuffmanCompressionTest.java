@@ -31,7 +31,7 @@ public class HuffmanCompressionTest {
     }
 
     @Test
-    public void testFileGetContent_NormalCase() throws IOException {
+    public void testGetContent_NormalCase() throws IOException {
         File file = tempFolder.newFile("testFile.txt");
         BufferedWriter bw = new BufferedWriter(new FileWriter(file));
         bw.write("abcaba");
@@ -42,7 +42,7 @@ public class HuffmanCompressionTest {
     }
 
     @Test
-    public void testFileGetContent_FileDoesNotExist() {
+    public void testGetContent_FileDoesNotExist() {
         assertThrows(RuntimeException.class, () -> HuffCompress.getContent("FileDoesNotExist.txt"));
     }
 
@@ -262,40 +262,5 @@ public class HuffmanCompressionTest {
         byte[] byteArray = new byte[]{115, 0};
 
         assertThrows(RuntimeException.class, () -> HuffCompress.WriteIntoFile(file.getPath(), root, paddedZero, byteArray));
-    }
-
-//    @Test
-//    public void testCompression_NormalCase() throws IOException, ClassNotFoundException {
-//        File file = tempFolder.newFile("testFile.txt");
-//
-//        Node root = new Node('a'+'b'+'c', 6);
-//        root.left = new Node('a', 3);
-//        root.right = new Node('b'+'c', 3);
-//        root.right.left = new Node('c', 1);
-//        root.right.right = new Node('b', 2);
-//        int paddedZero = 7;
-//        byte[] byteArray = new byte[]{115, 0};
-//
-//        FileOutputStream fout =  new FileOutputStream(file);
-//        ObjectOutputStream out = new ObjectOutputStream(fout);
-//
-//        String resultFile = HuffCompress.compress(file.getPath());
-//
-//        FileInputStream fin = new FileInputStream(resultFile);
-//        ObjectInputStream in = new ObjectInputStream(fin);
-//
-//        Node resultRoot = (Node) in.readObject();
-//        int resultPad = in.readInt();
-//        byte[] resultByteArray = (byte[]) in.readObject();
-//
-//        assertTrue(areIdentical(root, resultRoot));
-//        assertEquals(paddedZero, resultPad);
-//        assertArrayEquals(byteArray, resultByteArray);
-//    }
-
-    @Test
-    public void testCompression_FileIsEmpty() throws IOException {
-        File file = tempFolder.newFile("testFile.txt");
-        assertThrows(RuntimeException.class, () -> HuffCompress.compress(file.getPath()));
     }
 }

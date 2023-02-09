@@ -1,0 +1,16 @@
+
+`	java:S112J"FDefine and throw a dedicated exception instead of using a generic one.(¯åÕøÿÿÿÿ
+S	java:S106"9Replace this use of System.out or System.err by a logger.(¼êñôúÿÿÿÿ
+N	java:S106"9Replace this use of System.out or System.err by a logger.(ÎŞË
+S	java:S106%"9Replace this use of System.out or System.err by a logger.(·ğ­Åøÿÿÿÿ
+N	java:S1067"9Replace this use of System.out or System.err by a logger.(´à½Û
+S	java:S1068"9Replace this use of System.out or System.err by a logger.(Ôó„öùÿÿÿÿ
+N	java:S1069"9Replace this use of System.out or System.err by a logger.(©€Ë‰
+S	java:S106:"9Replace this use of System.out or System.err by a logger.(ÛÅ·Ëüÿÿÿÿ
+N	java:S106;"9Replace this use of System.out or System.err by a logger.(•›³¢
+S	java:S106<"9Replace this use of System.out or System.err by a logger.(ŞÍ¬ıÿÿÿÿ
+N	java:S106="9Replace this use of System.out or System.err by a logger.(å›·„
+S	java:S106?"9Replace this use of System.out or System.err by a logger.(—âàƒıÿÿÿÿ
+h	java:S100C"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¬ÌÍˆÿÿÿÿÿ
+W
+java:S1126M"AReplace this if-then-else statement by a single return statement.(Ø»ì

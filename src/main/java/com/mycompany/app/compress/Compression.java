@@ -17,7 +17,7 @@ public interface Compression {
      * @return the content
      * @throws FileNotFoundException the file not found exception
      */
-    StringBuilder getContent(String path) throws FileNotFoundException;
+    StringBuilder getContent(String path);
 
 
     /**
@@ -80,13 +80,4 @@ public interface Compression {
      * @return the string
      */
     void WriteIntoFile(String file, Node root, int paddedZeros, byte[] byteArray);
-
-    /**
-     * Compress the input file
-     *
-     * @param path the path
-     * @return the string
-     * @throws FileNotFoundException the file not found exception
-     */
-    String compress(String path) throws FileNotFoundException;
 }

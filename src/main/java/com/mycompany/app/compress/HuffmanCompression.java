@@ -1,6 +1,4 @@
 package com.mycompany.app.compress;
-
-import com.mycompany.app.treeNode.NodeComparator;
 import com.mycompany.app.treeNode.Node;
 
 import java.io.*;
@@ -12,8 +10,6 @@ import java.util.*;
 public class HuffmanCompression implements Compression {
     @Override
     public StringBuilder getContent(String path) {
-        File file = new File(path);
-
         StringBuilder s = new StringBuilder();
         try {
             FileReader fr = new FileReader(path);
@@ -137,40 +133,5 @@ public class HuffmanCompression implements Compression {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public String compress(String path)  {
-        File InFile = new File(path);
-        if(InFile.length() == 0){
-            throw new RuntimeException();
-        }
-
-        PriorityQueue<Node> pq = new PriorityQueue<>(new NodeComparator());
-
-        StringBuilder s = getContent(path);
-        Map<Character, Integer> mp = generateCharFreq(path);
-
-        for(Map.Entry<Character, Integer> e : mp.entrySet()) {
-//            System.out.println(e.getKey()+" : "+ e.getValue());
-            Node temp = new Node(e.getKey(), e.getValue());
-            pq.add(temp);
-        }
-
-        Node root = generateTree(pq);
-
-        Map<Character, String> table = new HashMap<>();
-        String temp="";
-        getTable(root, table, temp);
-
-        StringBuilder bitStr = getBitString(table, s.toString());
-        int paddedZeros = padBitString(bitStr);
-
-        byte[] byteArray = getCompressedByteArray(bitStr.toString());
-
-        String file = "compress.txt";
-        WriteIntoFile(file, root, paddedZeros, byteArray);
-
-        return file;
     }
 }
