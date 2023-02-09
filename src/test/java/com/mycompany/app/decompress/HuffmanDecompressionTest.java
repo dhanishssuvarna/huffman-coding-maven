@@ -3,40 +3,23 @@ package com.mycompany.app.decompress;
 import com.mycompany.app.treeNode.Node;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.*;
-import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
 public class HuffmanDecompressionTest {
     HuffmanDecompression HuffDecompress;
 
-    void  setDummyContent() throws IOException {
-        Node root = new Node('a'+'b'+'c', 6);
-        root.left = new Node('a', 3);
-        root.right = new Node('b'+'c', 3);
-        root.right.left = new Node('c', 1);
-        root.right.right = new Node('b', 2);
-        int paddedZero = 7;
-        byte[] byteArray = new byte[]{115, 0};
-
-        FileOutputStream fout = new FileOutputStream("testCompress.txt");
-        ObjectOutputStream out =new ObjectOutputStream(fout);
-
-        out.writeObject(root);
-        out.writeInt(paddedZero);
-        out.writeObject(byteArray);
-
-        out.close();
-        fout.close();
-    }
+    @Rule
+    public TemporaryFolder tempFolder = new TemporaryFolder();
 
     @Before
     public void setUp() throws Exception {
         HuffDecompress = new HuffmanDecompression();
-        setDummyContent();
     }
 
     @After
@@ -59,8 +42,28 @@ public class HuffmanDecompressionTest {
     }
 
     @Test
-    public void testRegenerateTree() throws IOException {
-        FileInputStream fin = new FileInputStream("testCompress.txt");
+    public void testRegenerateTree_NormalCase() throws IOException {
+        File file = tempFolder.newFile("./testCompress.txt");
+
+        Node root = new Node('a'+'b'+'c', 6);
+        root.left = new Node('a', 3);
+        root.right = new Node('b'+'c', 3);
+        root.right.left = new Node('c', 1);
+        root.right.right = new Node('b', 2);
+        int paddedZero = 7;
+        byte[] byteArray = new byte[]{115, 0};
+
+        FileOutputStream fout = new FileOutputStream(file);
+        ObjectOutputStream out =new ObjectOutputStream(fout);
+
+        out.writeObject(root);
+        out.writeInt(paddedZero);
+        out.writeObject(byteArray);
+
+        out.close();
+        fout.close();
+
+        FileInputStream fin = new FileInputStream(file);
         ObjectInputStream in = new ObjectInputStream(fin);
 
         Node expected = new Node('a'+'b'+'c', 6);
@@ -78,11 +81,13 @@ public class HuffmanDecompressionTest {
     }
 
     @Test
-    public void testRegenerateTreeThrowsException() throws IOException {
+    public void testRegenerateTree_TreeNotFoundInFile() throws IOException {
+        File file = tempFolder.newFile("./testCompress.txt");
+
         int paddedZero = 7;
         byte[] byteArray = new byte[]{115, 0};
 
-        FileOutputStream fout = new FileOutputStream("testCompress.txt");
+        FileOutputStream fout = new FileOutputStream(file);
         ObjectOutputStream out =new ObjectOutputStream(fout);
 
         out.writeInt(paddedZero);
@@ -91,7 +96,7 @@ public class HuffmanDecompressionTest {
         out.close();
         fout.close();
 
-        FileInputStream fin = new FileInputStream("testCompress.txt");
+        FileInputStream fin = new FileInputStream(file);
         ObjectInputStream in = new ObjectInputStream(fin);
 
         assertThrows(RuntimeException.class, () -> HuffDecompress.regenerateTree(in));
@@ -99,7 +104,27 @@ public class HuffmanDecompressionTest {
 
     @Test
     public void testGetPaddedZeros() throws IOException {
-        FileInputStream fin = new FileInputStream("testCompress.txt");
+        File file = tempFolder.newFile("./testCompress.txt");
+
+        Node root = new Node('a'+'b'+'c', 6);
+        root.left = new Node('a', 3);
+        root.right = new Node('b'+'c', 3);
+        root.right.left = new Node('c', 1);
+        root.right.right = new Node('b', 2);
+        int paddedZero = 7;
+        byte[] byteArray = new byte[]{115, 0};
+
+        FileOutputStream fout = new FileOutputStream(file);
+        ObjectOutputStream out =new ObjectOutputStream(fout);
+
+        out.writeObject(root);
+        out.writeInt(paddedZero);
+        out.writeObject(byteArray);
+
+        out.close();
+        fout.close();
+
+        FileInputStream fin = new FileInputStream(file);
         ObjectInputStream in = new ObjectInputStream(fin);
 
         int expected = 7;
@@ -114,7 +139,9 @@ public class HuffmanDecompressionTest {
     }
 
     @Test
-    public void testGetPaddedZerosThrowsException() throws IOException {
+    public void testGetPaddedZeros_PaddedZerosNotFoundInFile() throws IOException {
+        File file = tempFolder.newFile("./testCompress.txt");
+
         Node root = new Node('a'+'b'+'c', 6);
         root.left = new Node('a', 3);
         root.right = new Node('b'+'c', 3);
@@ -122,7 +149,7 @@ public class HuffmanDecompressionTest {
         root.right.right = new Node('b', 2);
         byte[] byteArray = new byte[]{115, 0};
 
-        FileOutputStream fout = new FileOutputStream("testCompress.txt");
+        FileOutputStream fout = new FileOutputStream(file);
         ObjectOutputStream out =new ObjectOutputStream(fout);
 
         out.writeObject(root);
@@ -131,15 +158,36 @@ public class HuffmanDecompressionTest {
         out.close();
         fout.close();
 
-        FileInputStream fin = new FileInputStream("testCompress.txt");
+        FileInputStream fin = new FileInputStream(file);
         ObjectInputStream in = new ObjectInputStream(fin);
 
+        Node temp = HuffDecompress.regenerateTree(in);
         assertThrows(RuntimeException.class, () -> HuffDecompress.getPaddedZeros(in));
     }
 
     @Test
     public void testGetCompressedString() throws IOException {
-        FileInputStream fin = new FileInputStream("testCompress.txt");
+        File file = tempFolder.newFile("./testCompress.txt");
+
+        Node root = new Node('a'+'b'+'c', 6);
+        root.left = new Node('a', 3);
+        root.right = new Node('b'+'c', 3);
+        root.right.left = new Node('c', 1);
+        root.right.right = new Node('b', 2);
+        int paddedZero = 7;
+        byte[] byteArray = new byte[]{115, 0};
+
+        FileOutputStream fout = new FileOutputStream(file);
+        ObjectOutputStream out =new ObjectOutputStream(fout);
+
+        out.writeObject(root);
+        out.writeInt(paddedZero);
+        out.writeObject(byteArray);
+
+        out.close();
+        fout.close();
+
+        FileInputStream fin = new FileInputStream(file);
         ObjectInputStream in = new ObjectInputStream(fin);
 
         byte[] expected = new byte[]{115, 0};
@@ -155,7 +203,9 @@ public class HuffmanDecompressionTest {
     }
 
     @Test
-    public void testGetCompressedStringThrowsException() throws IOException {
+    public void testGetCompressedString_CompressedStringNotFoundInFile() throws IOException {
+        File file = tempFolder.newFile("./testCompress.txt");
+
         Node root = new Node('a'+'b'+'c', 6);
         root.left = new Node('a', 3);
         root.right = new Node('b'+'c', 3);
@@ -163,7 +213,7 @@ public class HuffmanDecompressionTest {
         root.right.right = new Node('b', 2);
         int paddedZero = 7;
 
-        FileOutputStream fout = new FileOutputStream("testCompress.txt");
+        FileOutputStream fout = new FileOutputStream(file);
         ObjectOutputStream out =new ObjectOutputStream(fout);
 
         out.writeObject(root);
@@ -172,9 +222,11 @@ public class HuffmanDecompressionTest {
         out.close();
         fout.close();
 
-        FileInputStream fin = new FileInputStream("testCompress.txt");
+        FileInputStream fin = new FileInputStream(file);
         ObjectInputStream in = new ObjectInputStream(fin);
 
+        Node temp = HuffDecompress.regenerateTree(in);
+        int temp2 = HuffDecompress.getPaddedZeros(in);
         assertThrows(RuntimeException.class, () -> HuffDecompress.getCompressedString(in));
     }
 
@@ -202,7 +254,7 @@ public class HuffmanDecompressionTest {
     }
 
     @Test
-    public void testGetDecompressedString() {
+    public void testGetDecompressedString_NormalCase() {
         Node root = new Node('a'+'b'+'c', 6);
         root.left = new Node('a', 3);
         root.right = new Node('b'+'c', 3);
@@ -220,29 +272,41 @@ public class HuffmanDecompressionTest {
     }
 
     @Test
-    public void testWriteIntoFile() {
-        String file = "testDecompress.txt";
+    public void testGetDecompressedString_RootNull() {
+        Node root = null;
+        int paddedZero = 7;
+        String bitStr = "0111001100000000";
+
+        assertThrows(RuntimeException.class, () -> HuffDecompress.getDecompressedString(root, paddedZero, bitStr));
+    }
+
+    @Test
+    public void testWriteIntoFile_NormalCase() throws IOException {
+        File file = tempFolder.newFile("./testDecompress.txt");
         String decompressedStr = "abcaba";
 
         String result="";
-        HuffDecompress.WriteIntoFile(file, decompressedStr);
+        HuffDecompress.WriteIntoFile(file.getPath(), decompressedStr);
 
-        try{
-            FileReader f = new FileReader(file);
-            int i;
-            char c;
-            while((i = f.read()) != -1){
-                c = (char) i;
-                result+=c;
-            }
-        }catch (IOException e){
-            throw new RuntimeException(e);
+        FileReader f = new FileReader(file);
+        int i;
+        char c;
+        while((i = f.read()) != -1){
+            c = (char) i;
+            result += c;
         }
 
-
         assertEquals(decompressedStr, result);
-        assertThrows(RuntimeException.class, () -> HuffDecompress.WriteIntoFile("dummy.txt", decompressedStr));
+    }
 
+    @Test
+    public void testWriteIntoFile_FileIsWriteProtected() throws IOException {
+        File file = tempFolder.newFile("./testDecompress.txt");
+        file.setWritable(false);
+
+        String decompressedStr = "abcaba";
+
+        assertThrows(RuntimeException.class, () -> HuffDecompress.WriteIntoFile(file.getPath(), decompressedStr));
     }
 
     public byte[] getByteArray(String filename){
@@ -260,15 +324,42 @@ public class HuffmanDecompressionTest {
     }
 
     @Test
-    public void testDecompression() {
-        String path = "testCompress.txt";
+    public void testDecompression_NormalCase() throws IOException {
+        File originalFile = tempFolder.newFile("testFile.txt");
+        BufferedWriter bw = new BufferedWriter(new FileWriter(originalFile));
+        bw.write("abcaba");
+        bw.close();
 
-        String returnedFile = HuffDecompress.decompression(path);
+        File file = tempFolder.newFile("testCompress.txt");
 
-        byte[] expected = getByteArray("testFile.txt");
+        Node root = new Node('a'+'b'+'c', 6);
+        root.left = new Node('a', 3);
+        root.right = new Node('b'+'c', 3);
+        root.right.left = new Node('c', 1);
+        root.right.right = new Node('b', 2);
+        int paddedZero = 7;
+        byte[] byteArray = new byte[]{115, 0};
+
+        FileOutputStream fout = new FileOutputStream(file);
+        ObjectOutputStream out =new ObjectOutputStream(fout);
+
+        out.writeObject(root);
+        out.writeInt(paddedZero);
+        out.writeObject(byteArray);
+
+        out.close();
+        fout.close();
+
+        String returnedFile = HuffDecompress.decompression(file.getPath());
+
+        byte[] expected = getByteArray(originalFile.getPath());
         byte[] result = getByteArray(returnedFile);
 
         assertArrayEquals(expected, result);
-        assertThrows(RuntimeException.class, () -> HuffDecompress.decompression("Invalid.txt"));
+    }
+
+    @Test
+    public void testDecompression_FileNotFound() throws IOException {
+        assertThrows(RuntimeException.class, () -> HuffDecompress.decompression("FileNotFound.txt"));
     }
 }

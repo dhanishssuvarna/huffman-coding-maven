@@ -12,9 +12,12 @@ import java.util.*;
 public class HuffmanCompression implements Compression {
     @Override
     public StringBuilder getContent(String path) {
+        File file = new File(path);
+
         StringBuilder s = new StringBuilder();
         try {
             FileReader fr = new FileReader(path);
+
             int val = fr.read();
             while (val != -1){
                 char ch = (char) val;
@@ -72,14 +75,8 @@ public class HuffmanCompression implements Compression {
         return pq.peek();
     }
 
-    /**
-     * Gets table recursively
-     *
-     * @param root  the root of the tree
-     * @param table the table contains the Huffman table
-     * @param str   the str contains the bit string
-     */
-    void getTable(Node root, Map<Character, String> table, String str) {
+    @Override
+    public void getTable(Node root, Map<Character, String> table, String str) {
         if(root==null)
             return;
         if (root.left == null && root.right == null) {
@@ -91,20 +88,12 @@ public class HuffmanCompression implements Compression {
     }
 
     @Override
-    public Map<Character, String> generateTable(Node root){
-        Map<Character, String> table = new HashMap<>();
-        String temp="";
-        getTable(root, table, temp);
-
-//        for(Map.Entry<Character, String> e : table.entrySet()) {
-//            System.out.println(e.getKey()+" | "+e.getValue());
-//        }
-        return table;
-    }
-
-    @Override
     public StringBuilder getBitString(Map<Character, String> table, String s){
         StringBuilder bitStr = new StringBuilder();
+
+        if (table == null || table.size() == 0 || s.length() == 0){
+            throw new RuntimeException();
+        }
 
         for (char c : s.toCharArray()) {
             String bit = table.get(c);
@@ -152,6 +141,11 @@ public class HuffmanCompression implements Compression {
 
     @Override
     public String compress(String path)  {
+        File InFile = new File(path);
+        if(InFile.length() == 0){
+            throw new RuntimeException();
+        }
+
         PriorityQueue<Node> pq = new PriorityQueue<>(new NodeComparator());
 
         StringBuilder s = getContent(path);
@@ -164,7 +158,10 @@ public class HuffmanCompression implements Compression {
         }
 
         Node root = generateTree(pq);
-        Map<Character, String> table = generateTable(root);
+
+        Map<Character, String> table = new HashMap<>();
+        String temp="";
+        getTable(root, table, temp);
 
         StringBuilder bitStr = getBitString(table, s.toString());
         int paddedZeros = padBitString(bitStr);

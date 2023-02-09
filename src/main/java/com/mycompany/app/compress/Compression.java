@@ -15,6 +15,7 @@ public interface Compression {
      *
      * @param path the path
      * @return the content
+     * @throws FileNotFoundException the file not found exception
      */
     StringBuilder getContent(String path) throws FileNotFoundException;
 
@@ -36,12 +37,13 @@ public interface Compression {
     Node generateTree(PriorityQueue<Node> pq);
 
     /**
-     * Generate table map.
+     * Get table.
      *
-     * @param root the root of tree
-     * @return the map is the Huffman table
+     * @param root  the root
+     * @param table the table
+     * @param str   the str
      */
-    Map<Character, String> generateTable(Node root);
+    void getTable(Node root, Map<Character, String> table, String str);
 
     /**
      * Gets bit string.
@@ -71,6 +73,7 @@ public interface Compression {
     /**
      * Write into file.
      *
+     * @param file        the file
      * @param root        the root
      * @param paddedZeros the padded zeros
      * @param byteArray   the byte array
@@ -83,6 +86,7 @@ public interface Compression {
      *
      * @param path the path
      * @return the string
+     * @throws FileNotFoundException the file not found exception
      */
     String compress(String path) throws FileNotFoundException;
 }
