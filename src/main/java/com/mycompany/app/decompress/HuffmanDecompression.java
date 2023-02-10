@@ -1,46 +1,10 @@
 package com.mycompany.app.decompress;
 import com.mycompany.app.treeNode.Node;
-import java.io.*;
 
 /**
  * The type Huffman decompression.
  */
-public class HuffmanDecompression implements Decompression {
-    @Override
-    public Node regenerateTree(ObjectInputStream in){
-        Node root=null;
-        try {
-            root = (Node) in.readObject();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return root;
-    }
-
-    @Override
-    public int getPaddedZeros(ObjectInputStream in){
-        int paddedZeros = 0;
-        try {
-            paddedZeros = in.readInt();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return paddedZeros;
-    }
-
-
-    @Override
-    public byte[] getCompressedString(ObjectInputStream in){
-        byte[] compressedString = null;
-        try {
-            compressedString = (byte[]) in.readObject();
-        }catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return compressedString;
-    }
-
-
+public class HuffmanDecompression implements IHuffmanDecompression {
     @Override
     public StringBuilder getBitString(byte[] compressedString){
         StringBuilder bitStr = new StringBuilder();
@@ -84,17 +48,5 @@ public class HuffmanDecompression implements Decompression {
             temp=root;
         }
         return decompressedStr;
-    }
-
-
-    @Override
-    public void WriteIntoFile(String file, String decompressedStr){
-        try {
-            FileWriter f = new FileWriter(file);
-            f.write(decompressedStr);
-            f.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

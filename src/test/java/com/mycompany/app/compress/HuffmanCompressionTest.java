@@ -10,7 +10,6 @@ import org.junit.rules.TemporaryFolder;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.PriorityQueue;
 
 import static org.junit.Assert.*;
 
@@ -30,41 +29,33 @@ public class HuffmanCompressionTest {
     public void tearDown() throws Exception {
     }
 
-    @Test
-    public void testGetContent_NormalCase() throws IOException {
-        File file = tempFolder.newFile("testFile.txt");
-        BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-        bw.write("abcaba");
-        bw.close();
-
-        StringBuilder result = HuffCompress.getContent(file.getPath());
-        assertEquals("abcaba", result.toString());
-    }
-
-    @Test
-    public void testGetContent_FileDoesNotExist() {
-        assertThrows(RuntimeException.class, () -> HuffCompress.getContent("FileDoesNotExist.txt"));
-    }
+//    @Test
+//    public void testGetContent_NormalCase() throws IOException {
+//        File file = tempFolder.newFile("testFile.txt");
+//        BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+//        bw.write("abcaba");
+//        bw.close();
+//
+//        StringBuilder result = HuffCompress.getContent(file.getPath());
+//        assertEquals("abcaba", result.toString());
+//    }
+//
+//    @Test
+//    public void testGetContent_FileDoesNotExist() {
+//        assertThrows(RuntimeException.class, () -> HuffCompress.getContent("FileDoesNotExist.txt"));
+//    }
 
     @Test
     public void testCharacterFrequency_NormalCase() throws IOException {
-        File file = tempFolder.newFile("testFile.txt");
-        BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-        bw.write("abcaba");
-        bw.close();
+        StringBuilder s = new StringBuilder("abcaba");
 
         Map<Character, Integer> expected = new HashMap<>();
         expected.put('a', 3);
         expected.put('b', 2);
         expected.put('c', 1);
 
-        Map<Character, Integer> result = HuffCompress.generateCharFreq(file.getPath());
+        Map<Character, Integer> result = HuffCompress.generateCharFreq(s);
         assertEquals(expected, result);
-    }
-
-    @Test
-    public void testCharacterFrequency_FileDoesNotExist() throws IOException {
-        assertThrows(RuntimeException.class, () -> HuffCompress.generateCharFreq("FileDoesNotExist.txt"));
     }
 
     public static boolean areIdentical(Node root1, Node root2) {
@@ -84,14 +75,19 @@ public class HuffmanCompressionTest {
 
     @Test
     public void testGenerateTree_NormalCase() {
-        PriorityQueue<Node> pq = new PriorityQueue<>((l, r) -> {
-            if(l.weight == r.weight)
-                return l.value - r.value;
-            return l.weight - r.weight;
-        });
-        pq.add(new Node('a', 3));
-        pq.add(new Node('b', 2));
-        pq.add(new Node('c', 1));
+//        PriorityQueue<Node> pq = new PriorityQueue<>((l, r) -> {
+//            if(l.weight == r.weight)
+//                return l.value - r.value;
+//            return l.weight - r.weight;
+//        });
+//        pq.add(new Node('a', 3));
+//        pq.add(new Node('b', 2));
+//        pq.add(new Node('c', 1));
+
+        Map<Character, Integer> mp = new HashMap<>();
+        mp.put('a', 3);
+        mp.put('b', 2);
+        mp.put('c', 1);
 
 
         Node expected = new Node('a'+'b'+'c', 6);
@@ -100,26 +96,29 @@ public class HuffmanCompressionTest {
         expected.right.left = new Node('c', 1);
         expected.right.right = new Node('b', 2);
 
-        Node result = HuffCompress.generateTree(pq);
+        Node result = HuffCompress.generateTree(mp);
 
         assertTrue(areIdentical(expected, result));
     }
 
     @Test
     public void testGenerateTree_SingleNode(){
-        PriorityQueue<Node> pq = new PriorityQueue<>((l, r) -> {
-            if(l.weight == r.weight)
-                return l.value - r.value;
-            return l.weight - r.weight;
-        });
+//        PriorityQueue<Node> pq = new PriorityQueue<>((l, r) -> {
+//            if(l.weight == r.weight)
+//                return l.value - r.value;
+//            return l.weight - r.weight;
+//        });
+//
+//        pq.add(new Node('a', 3));
 
-        pq.add(new Node('a', 3));
+        Map<Character, Integer> mp = new HashMap<>();
+        mp.put('a', 3);
 
         Node expected = new Node('a', 3);
         expected.left = new Node('a', 3);
         expected.right = new Node(0, 0);
 
-        Node result = HuffCompress.generateTree(pq);
+        Node result = HuffCompress.generateTree(mp);
 
         assertTrue(areIdentical(expected, result));
     }
@@ -222,45 +221,45 @@ public class HuffmanCompressionTest {
         assertArrayEquals(expected, result);
     }
 
-    @Test
-    public void testWriteIntoFile_NormalCase() throws IOException, ClassNotFoundException {
-        File file = tempFolder.newFile("testCompress.txt");
-
-        Node root = new Node('a'+'b'+'c', 6);
-        root.left = new Node('a', 3);
-        root.right = new Node('b'+'c', 3);
-        root.right.left = new Node('c', 1);
-        root.right.right = new Node('b', 2);
-        int paddedZero = 7;
-        byte[] byteArray = new byte[]{115, 0};
-
-        HuffCompress.WriteIntoFile(file.getPath(), root, paddedZero, byteArray);
-
-        FileInputStream fin = new FileInputStream(file);
-        ObjectInputStream in =new ObjectInputStream(fin);
-
-        Node resultRoot= (Node) in.readObject();
-        int resultPad = in.readInt();
-        byte[] resultByteArray = (byte[]) in.readObject();
-
-        assertTrue(areIdentical(root, resultRoot));
-        assertEquals(paddedZero, resultPad);
-        assertArrayEquals(byteArray, resultByteArray);
-    }
-
-    @Test
-    public void testWriteIntoFile_NoFileWritePermission() throws IOException {
-        File file = tempFolder.newFile("testCompress.txt");
-        file.setWritable(false);
-
-        Node root = new Node('a'+'b'+'c', 6);
-        root.left = new Node('a', 3);
-        root.right = new Node('b'+'c', 3);
-        root.right.left = new Node('c', 1);
-        root.right.right = new Node('b', 2);
-        int paddedZero = 7;
-        byte[] byteArray = new byte[]{115, 0};
-
-        assertThrows(RuntimeException.class, () -> HuffCompress.WriteIntoFile(file.getPath(), root, paddedZero, byteArray));
-    }
+//    @Test
+//    public void testWriteIntoFile_NormalCase() throws IOException, ClassNotFoundException {
+//        File file = tempFolder.newFile("testCompress.txt");
+//
+//        Node root = new Node('a'+'b'+'c', 6);
+//        root.left = new Node('a', 3);
+//        root.right = new Node('b'+'c', 3);
+//        root.right.left = new Node('c', 1);
+//        root.right.right = new Node('b', 2);
+//        int paddedZero = 7;
+//        byte[] byteArray = new byte[]{115, 0};
+//
+//        HuffCompress.WriteIntoFile(file.getPath(), root, paddedZero, byteArray);
+//
+//        FileInputStream fin = new FileInputStream(file);
+//        ObjectInputStream in =new ObjectInputStream(fin);
+//
+//        Node resultRoot= (Node) in.readObject();
+//        int resultPad = in.readInt();
+//        byte[] resultByteArray = (byte[]) in.readObject();
+//
+//        assertTrue(areIdentical(root, resultRoot));
+//        assertEquals(paddedZero, resultPad);
+//        assertArrayEquals(byteArray, resultByteArray);
+//    }
+//
+//    @Test
+//    public void testWriteIntoFile_NoFileWritePermission() throws IOException {
+//        File file = tempFolder.newFile("testCompress.txt");
+//        file.setWritable(false);
+//
+//        Node root = new Node('a'+'b'+'c', 6);
+//        root.left = new Node('a', 3);
+//        root.right = new Node('b'+'c', 3);
+//        root.right.left = new Node('c', 1);
+//        root.right.right = new Node('b', 2);
+//        int paddedZero = 7;
+//        byte[] byteArray = new byte[]{115, 0};
+//
+//        assertThrows(RuntimeException.class, () -> HuffCompress.WriteIntoFile(file.getPath(), root, paddedZero, byteArray));
+//    }
 }

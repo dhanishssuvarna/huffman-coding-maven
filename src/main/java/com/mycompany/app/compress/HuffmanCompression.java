@@ -1,54 +1,33 @@
 package com.mycompany.app.compress;
 import com.mycompany.app.treeNode.Node;
+import com.mycompany.app.treeNode.NodeComparator;
 
-import java.io.*;
 import java.util.*;
 
 /**
  * The type Huffman compression.
  */
-public class HuffmanCompression implements Compression {
+public class HuffmanCompression implements IHuffmanCompression {
     @Override
-    public StringBuilder getContent(String path) {
-        StringBuilder s = new StringBuilder();
-        try {
-            FileReader fr = new FileReader(path);
-
-            int val = fr.read();
-            while (val != -1){
-                char ch = (char) val;
-                s.append(ch);
-                val = fr.read();
-            }
-
-            fr.close();
-        }catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return s;
-    }
-
-    @Override
-    public Map<Character, Integer> generateCharFreq(String path){
+    public Map<Character, Integer> generateCharFreq(StringBuilder s){
         Map<Character, Integer> mp = new HashMap<>();
-        try {
-            FileReader fr = new FileReader(path);
-            int val = fr.read();
-            while (val != -1){
 
-                char ch = (char) val;
-                mp.put(ch,(mp.getOrDefault(ch,0)+1));
-                val = fr.read();
-            }
-            fr.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        for(int i=0; i<s.length(); i++){
+            char ch = s.charAt(i);
+            mp.put(ch,(mp.getOrDefault(ch,0)+1));
         }
         return mp;
     }
 
     @Override
-    public Node generateTree(PriorityQueue<Node> pq){
+    public Node generateTree(Map<Character, Integer> mp){
+        PriorityQueue<Node> pq = new PriorityQueue<>(new NodeComparator());
+
+        for(Map.Entry<Character, Integer> e : mp.entrySet()) {
+//            System.out.println(e.getKey()+" : "+ e.getValue());
+            Node temp = new Node(e.getKey(), e.getValue());
+            pq.add(temp);
+        }
 
         // if single node
         if(pq.size()==1){
@@ -116,22 +95,5 @@ public class HuffmanCompression implements Compression {
             byteArray[k++]=ch;
         }
         return byteArray;
-    }
-
-    @Override
-    public void WriteIntoFile(String file, Node root, int paddedZeros, byte[] byteArray){
-        try {
-            FileOutputStream fout = new FileOutputStream(file);
-            ObjectOutputStream out =new ObjectOutputStream(fout);
-
-            out.writeObject(root);
-            out.writeInt(paddedZeros);
-            out.writeObject(byteArray);
-
-            out.close();
-            fout.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

@@ -4,37 +4,27 @@ import com.mycompany.app.treeNode.Node;
 
 import java.io.FileNotFoundException;
 import java.util.Map;
-import java.util.PriorityQueue;
 
 /**
  * The interface Compression.
  */
-public interface Compression {
-    /**
-     * Gets content.
-     *
-     * @param path the path
-     * @return the content
-     * @throws FileNotFoundException the file not found exception
-     */
-    StringBuilder getContent(String path);
-
-
+public interface IHuffmanCompression {
     /**
      * Generate char freq map.
      *
-     * @param path the path
+     * @param s the path
      * @return the map
      */
-    Map<Character, Integer> generateCharFreq(String path);
+    Map<Character, Integer> generateCharFreq(StringBuilder s);
+
 
     /**
      * Generate tree node.
      *
-     * @param pq the pq is the priority Queue
-     * @return the node i.e root of the tree
+     * @param mp the mp
+     * @return the node
      */
-    Node generateTree(PriorityQueue<Node> pq);
+    public Node generateTree(Map<Character, Integer> mp);
 
     /**
      * Get table.
@@ -69,15 +59,4 @@ public interface Compression {
      * @return the byte [ ]
      */
     byte[] getCompressedByteArray(String bitStr);
-
-    /**
-     * Write into file.
-     *
-     * @param file        the file
-     * @param root        the root
-     * @param paddedZeros the padded zeros
-     * @param byteArray   the byte array
-     * @return the string
-     */
-    void WriteIntoFile(String file, Node root, int paddedZeros, byte[] byteArray);
 }

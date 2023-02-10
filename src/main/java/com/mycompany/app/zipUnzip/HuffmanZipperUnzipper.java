@@ -1,79 +1,67 @@
 package com.mycompany.app.zipUnzip;
 
-import com.mycompany.app.compress.Compression;
+import com.mycompany.app.FileIO.*;
+import com.mycompany.app.compress.IHuffmanCompression;
 import com.mycompany.app.compress.HuffmanCompression;
-import com.mycompany.app.decompress.Decompression;
+import com.mycompany.app.decompress.IHuffmanDecompression;
 import com.mycompany.app.decompress.HuffmanDecompression;
 import com.mycompany.app.treeNode.Node;
-import com.mycompany.app.treeNode.NodeComparator;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.PriorityQueue;
 
 public class HuffmanZipperUnzipper implements IZipperUnzipper{
-
 
     @Override
     public String compress(String originalFile) {
         String compressedFile = "compress.txt";
 
-        Compression hc = new HuffmanCompression();
-
-        PriorityQueue<Node> pq = new PriorityQueue<>(new NodeComparator());
-
-        StringBuilder s = hc.getContent(originalFile);
-        Map<Character, Integer> mp = hc.generateCharFreq(originalFile);
-
-        for(Map.Entry<Character, Integer> e : mp.entrySet()) {
-//            System.out.println(e.getKey()+" : "+ e.getValue());
-            Node temp = new Node(e.getKey(), e.getValue());
-            pq.add(temp);
+        File file = new File(originalFile);
+        if((!file.exists()) || (file.length() == 0)){
+            throw new RuntimeException("Enter a Valid file Name!!");
         }
 
-        Node root = hc.generateTree(pq);
+        IFileRead fileReadObj = new FileRead();
+        StringBuilder s = fileReadObj.readComp(originalFile);
 
+        IHuffmanCompression hc = new HuffmanCompression();
+        Map<Character, Integer> mp = hc.generateCharFreq(s);
+        Node root = hc.generateTree(mp);
         Map<Character, String> table = new HashMap<>();
         hc.getTable(root, table, "");
-
         StringBuilder bitStr = hc.getBitString(table, s.toString());
         int paddedZeros = hc.padBitString(bitStr);
-
         byte[] byteArray = hc.getCompressedByteArray(bitStr.toString());
 
-        hc.WriteIntoFile(compressedFile, root, paddedZeros, byteArray);
+        IFileWrite fileWriteObj = new FileWrite();
+        fileWriteObj.write(compressedFile, root, paddedZeros, byteArray);
 
         return compressedFile;
     }
 
     @Override
     public String decompress(String compressedFile) {
-        String decompressedFile="decompress.txt";
+        String decompressedFile = "decompress.txt";
 
-        Decompression hd = new HuffmanDecompression();
-
-        try {
-            FileInputStream fin = new FileInputStream(compressedFile);
-            ObjectInputStream in = new ObjectInputStream(fin);
-
-            Node root = hd.regenerateTree(in);
-            int paddedZeros = hd.getPaddedZeros(in);
-            byte[] compressedString = hd.getCompressedString(in);
-
-            in.close();
-            fin.close();
-
-            StringBuilder bitStr = hd.getBitString(compressedString);
-            StringBuilder decompressedStr = hd.getDecompressedString(root, paddedZeros, bitStr.toString());
-
-            hd.WriteIntoFile(decompressedFile, decompressedStr.toString());
-            return decompressedFile;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        File file = new File(compressedFile);
+        if((!file.exists()) || (file.length() == 0)){
+            throw new RuntimeException("Enter a Valid file Name!!");
         }
+
+        IFileRead fileReadObj = new FileRead();
+        ComplexReturnType crt = fileReadObj.readDecomp(compressedFile);
+        Node root = crt.getRoot();
+        int paddedZeros = crt.getPaddedZeros();
+        byte[] compressedString = crt.getByteArray();
+
+        IHuffmanDecompression hd = new HuffmanDecompression();
+        StringBuilder bitStr = hd.getBitString(compressedString);
+        StringBuilder decompressedStr = hd.getDecompressedString(root, paddedZeros, bitStr.toString());
+
+        IFileWrite fileWriteObj = new FileWrite();
+        fileWriteObj.write(decompressedFile, decompressedStr);
+
+        return decompressedFile;
     }
 }
