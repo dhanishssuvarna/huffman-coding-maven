@@ -96,4 +96,16 @@ public class HuffmanCompression implements IHuffmanCompression {
         }
         return byteArray;
     }
+
+    @Override
+    public double getWAvg(Map<Character, Integer> mp, Map<Character, String> table){
+        double sum=0;
+        double cnt=0;
+
+        for(Map.Entry<Character, Integer> m : mp.entrySet()){
+            sum += m.getValue() * table.get(m.getKey()).length();
+            cnt += m.getValue();
+        }
+        return sum/cnt;
+    }
 }

@@ -59,4 +59,6 @@ public interface IHuffmanCompression {
      * @return the byte [ ]
      */
     byte[] getCompressedByteArray(String bitStr);
+
+    double getWAvg(Map<Character, Integer> mp, Map<Character, String> table);
 }

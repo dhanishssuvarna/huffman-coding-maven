@@ -30,6 +30,10 @@ public class HuffmanZipperUnzipper implements IZipperUnzipper{
         Node root = hc.generateTree(mp);
         Map<Character, String> table = new HashMap<>();
         hc.getTable(root, table, "");
+        // w_avg
+        double avg = hc.getWAvg(mp, table);
+        System.out.println("Average : "+avg);
+        // w_avg
         StringBuilder bitStr = hc.getBitString(table, s.toString());
         int paddedZeros = hc.padBitString(bitStr);
         byte[] byteArray = hc.getCompressedByteArray(bitStr.toString());
